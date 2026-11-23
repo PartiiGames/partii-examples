@@ -1,0 +1,9 @@
+node_modules/
+# Installed by each example's get-sdk.mjs from partii.games/docs/sdk-ts: never committed, never edited.
+partii-sdk/
+dist/
+dist-prod/
+.env.local
+.env.*.local
+*.log
+.DS_Store

@@ -1,0 +1,94 @@
+{
+  "about": "Partii examples: short working examples, each with a test, a README and a TRAPS.md. Search by tags and when; copy the folder; run its test. Web examples: cd <path> && npm install && npm test (Partii staging, headless).",
+  "sdk": {
+    "web": "Partii's TypeScript SDK, installed by each example's get-sdk.mjs from https://partii.games/docs/sdk-ts/ (client.ts, generated.ts, buy.ts) and imported as @partii/sdk and @partii/sdk/buy. No npm package yet.",
+    "godot": "https://github.com/PartiiGames/partii-godot",
+    "rust": "https://github.com/PartiiGames/partii-sdk"
+  },
+  "staging": {
+    "api": "https://api-staging.partii.games",
+    "game": "partii-examples",
+    "key": "pk_examples_examples_Iejc-8371u7-wd8nn-BJzY",
+    "note": "A publishable key (public by design) for the shared test game. Use your own game's key for your game."
+  },
+  "examples": [
+    {
+      "id": "01-starter-shell",
+      "title": "Starter shell: Vite + TypeScript web game on Partii",
+      "tags": ["start", "web", "vite", "typescript", "guest", "analytics", "errors", "tsconfig", "phaser", "staging", "production", "build", "deploy"],
+      "when": "Starting any new web game on Partii: guest player, analytics, error reports, staging and production builds.",
+      "language": "typescript",
+      "engine": "web (Vite, canvas; works with Phaser)",
+      "path": "examples/01-starter-shell",
+      "test": "cd examples/01-starter-shell && npm install && npm test",
+      "status": "tested"
+    },
+    {
+      "id": "02-sign-in",
+      "title": "Sign in: guest to account, sign out, sign back in",
+      "tags": ["account", "sign-in", "login", "email", "guest", "upgrade", "merge", "sign-out", "identity_in_use"],
+      "when": "Letting a guest keep their progress with an email account, or adding sign-out.",
+      "language": "typescript",
+      "engine": "web",
+      "path": "examples/02-sign-in",
+      "test": "cd examples/02-sign-in && npm install && npm test",
+      "status": "tested"
+    },
+    {
+      "id": "03-save-load",
+      "title": "Cloud save and load with conflict merge",
+      "tags": ["save", "load", "cloud-save", "progress", "conflict", "merge", "base_rev", "slots", "account_needed"],
+      "when": "Keeping a player's progress or settings across devices.",
+      "language": "typescript",
+      "engine": "web",
+      "path": "examples/03-save-load",
+      "test": "cd examples/03-save-load && npm install && npm test",
+      "status": "tested"
+    },
+    {
+      "id": "04-leaderboard",
+      "title": "Leaderboard: submit once per run, rank and top 10",
+      "tags": ["leaderboard", "score", "high-score", "rank", "daily", "weekly", "times"],
+      "when": "Showing a score, distance or time board with the player's own rank.",
+      "language": "typescript",
+      "engine": "web",
+      "path": "examples/04-leaderboard",
+      "test": "cd examples/04-leaderboard && npm install && npm test",
+      "status": "tested"
+    },
+    {
+      "id": "05-buy-unlock",
+      "title": "Buy an item with Pops and unlock it",
+      "tags": ["buy", "purchase", "pops", "unlock", "items", "shop", "monetization", "skin", "full-game", "confirm_on_partii"],
+      "when": "Selling a skin, level, full-game unlock or consumable for Pops.",
+      "language": "typescript",
+      "engine": "web",
+      "path": "examples/05-buy-unlock",
+      "test": "cd examples/05-buy-unlock && npm install && npm test",
+      "status": "tested"
+    },
+    {
+      "id": "06-analytics",
+      "title": "Analytics: batched events, sessions and the drop rules",
+      "tags": ["analytics", "events", "telemetry", "session", "session_end", "beacon", "pagehide", "dropped", "funnel"],
+      "when": "Tracking gameplay events and sessions without Partii silently dropping them.",
+      "language": "typescript",
+      "engine": "web",
+      "path": "examples/06-analytics",
+      "test": "cd examples/06-analytics && npm install && npm test",
+      "status": "tested"
+    },
+    {
+      "id": "13-godot-addon",
+      "title": "Godot 4 add-on: player, saves, buys, leaderboards, tilt, analytics",
+      "tags": ["godot", "godot4", "gdscript", "addon", "web-export", "tilt", "motion", "saves", "buy", "leaderboard", "analytics", "asset-library"],
+      "when": "A Godot 4 game exported to the web that needs Partii (copy of PartiiGames/partii-godot, the source of truth).",
+      "language": "gdscript",
+      "engine": "godot 4.3+",
+      "path": "examples/13-godot-addon",
+      "source": "https://github.com/PartiiGames/partii-godot",
+      "test": "cd examples/13-godot-addon && godot --headless --path . --export-release Web build/web/index.html && node tests/web/motion.mjs build/web && node tests/web/frame-motion.mjs build/web && PARTII_GAME=partii-examples PARTII_KEY=pk_examples_examples_Iejc-8371u7-wd8nn-BJzY PARTII_API=https://api-staging.partii.games node tests/web/staging.mjs build/web",
+      "status": "tested"
+    }
+  ]
+}

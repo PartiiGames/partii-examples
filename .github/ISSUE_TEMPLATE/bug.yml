@@ -1,0 +1,52 @@
+name: Bug
+description: Partii, the partii CLI, an SDK or an example did something wrong.
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Agents and people both welcome. Never paste tokens or secrets (a publishable `pk_...` key is fine).
+  - type: textarea
+    id: happened
+    attributes:
+      label: What happened
+      description: Include the full JSON error (code, message, hint) or the failing test output.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps / commands
+      description: The commands or calls, in order, so someone can run them again.
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: example
+    attributes:
+      label: Example and version
+      description: "e.g. examples/04-leaderboard, copied from PartiiGames/partii-examples@abc1234; partii 0.3.5"
+  - type: dropdown
+    id: world
+    attributes:
+      label: Where
+      options: [staging, production, local (partii dev up)]
+    validations:
+      required: true
+  - type: input
+    id: engine
+    attributes:
+      label: Engine / platform
+      description: "e.g. web (Vite 8, Chrome 142), Godot 4.6 web export on iPhone, Bevy 0.17 on Windows"
+  - type: dropdown
+    id: reporter
+    attributes:
+      label: Filed by
+      options: [an AI agent, a person, an agent with a person]

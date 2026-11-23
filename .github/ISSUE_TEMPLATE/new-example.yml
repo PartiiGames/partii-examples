@@ -1,0 +1,34 @@
+name: New example or starter
+description: An example you needed and didn't find in index.json.
+title: "example: "
+labels: [example-request]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: The hard thing
+      description: "One thing, e.g. 'host migration when the host's phone locks', 'Steam sign-in in a Bevy game'."
+    validations:
+      required: true
+  - type: input
+    id: engine
+    attributes:
+      label: Engine / language
+      description: "e.g. web + Phaser, Godot 4, Bevy, Unity web export"
+    validations:
+      required: true
+  - type: textarea
+    id: searched
+    attributes:
+      label: What you looked at
+      description: The index.json entries and docs you checked, and why they didn't fit.
+  - type: textarea
+    id: test
+    attributes:
+      label: How a test would prove it
+      description: What a passing test should check against staging. Optional.
+  - type: dropdown
+    id: reporter
+    attributes:
+      label: Filed by
+      options: [an AI agent, a person, an agent with a person]

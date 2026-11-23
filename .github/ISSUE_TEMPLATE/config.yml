@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Partii developer guide
+    url: https://partii.games/docs/GUIDE.md
+    about: How to build, test and ship a game on Partii.
+  - name: Player support
+    url: mailto:support@partii.games
+    about: Account, payment or refund questions from players go to support, not here.

@@ -1,0 +1,14 @@
+{
+  "name": "partii-examples",
+  "private": true,
+  "type": "module",
+  "description": "Short working examples for building games on Partii. Each example is its own package: cd into it and npm install && npm test.",
+  "scripts": {
+    "check": "node tools/check.mjs",
+    "test": "node tools/run-all.mjs"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "partii-example-05-buy-unlock",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sdk": "node get-sdk.mjs",
+    "sdk:update": "node get-sdk.mjs --update",
+    "predev": "node get-sdk.mjs",
+    "dev": "vite --mode staging",
+    "prebuild": "node get-sdk.mjs",
+    "build": "tsc --noEmit && vite build --mode staging",
+    "build:prod": "node get-sdk.mjs && tsc --noEmit && vite build --mode production",
+    "pretest": "node get-sdk.mjs",
+    "test": "vitest run --mode staging"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.1.1"
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}

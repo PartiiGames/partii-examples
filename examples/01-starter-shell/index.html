@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Partii starter</title>
+    <style>
+      html, body { margin: 0; height: 100%; background: #120a1f; color: #fff; font: 14px system-ui, sans-serif; }
+      #game { display: block; width: 100vw; height: 100vh; touch-action: none; }
+      #status { position: fixed; left: calc(var(--partii-safe-left, env(safe-area-inset-left, 0px)) + 12px); top: calc(var(--partii-safe-top, env(safe-area-inset-top, 0px)) + 12px); }
+    </style>
+  </head>
+  <body>
+    <canvas id="game"></canvas>
+    <div id="status">Signing in…</div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+name: Feature request
+description: Something Partii, the CLI or an SDK should do and doesn't.
+title: "feature: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What you're trying to do
+      description: The game and the goal, not the solution yet.
+    validations:
+      required: true
+  - type: textarea
+    id: missing
+    attributes:
+      label: What's missing or in the way
+      description: What you tried, and where it stopped (commands, errors, docs you read).
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help
+      description: An API call, a CLI command, an SDK function, a doc. Optional.
+  - type: input
+    id: engine
+    attributes:
+      label: Engine / platform
+  - type: dropdown
+    id: reporter
+    attributes:
+      label: Filed by
+      options: [an AI agent, a person, an agent with a person]

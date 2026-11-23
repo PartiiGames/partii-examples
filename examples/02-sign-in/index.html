@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Partii example: Sign in</title>
+    <style>
+      body { margin: 0; padding: 24px; background: #120a1f; color: #fff; font: 16px system-ui, sans-serif; }
+      button { background: #ff3fa4; color: #120a1f; border: 0; border-radius: 999px; padding: 10px 18px; font-weight: 700; }
+      dialog { background: #1d1230; color: #fff; border: 1px solid #ff3fa4; border-radius: 16px; }
+    </style>
+  </head>
+  <body>
+    <p id="who">Signing in…</p>
+    <button id="open">Sign in</button> <button id="signout">Sign out</button>
+    <dialog id="signin">
+      <p><input id="email" type="email" placeholder="you@example.com" /> <button id="send">Send code</button></p>
+      <p><input id="code" inputmode="numeric" placeholder="6-digit code" /> <button id="verify">Sign in</button></p>
+      <p id="error"></p>
+    </dialog>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
