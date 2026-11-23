@@ -10,7 +10,6 @@ Install the Partii skill for yourself.
 
 1. Download the folder skill/partii from https://github.com/PartiiGames/partii-examples (branch main):
    curl -fsSL https://codeload.github.com/PartiiGames/partii-examples/tar.gz/main | tar -xz -C "${TMPDIR:-/tmp}" partii-examples-main/skill/partii
-   (If that fails because the repo is private and `gh` is signed in: gh repo clone PartiiGames/partii-examples "${TMPDIR:-/tmp}/partii-examples-main" -- --depth 1)
    It holds SKILL.md and a references/ folder. Read SKILL.md before installing it.
 2. Put the whole partii folder where YOU load skills from, for every project of this user:
    - Claude Code: ~/.claude/skills/partii/

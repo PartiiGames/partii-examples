@@ -48,7 +48,6 @@ cp -r /tmp/partii-examples/examples/03-save-load ./partii-saves && cd partii-sav
 npm install && npm test        # must pass against staging before you change anything
 ```
 
-(Private while in review: with `gh` signed in, `gh repo clone PartiiGames/partii-examples`.)
 
 | Need | Example |
 |---|---|
