@@ -34,6 +34,51 @@ const r = await buy(api, { game, item: "gold-skin" });                        //
 - Inside the Partii app the game runs full-bleed in a frame: read insets from `?safe=T,R,B,L` and
   `partii:insets` messages, not `env(safe-area-inset-*)` alone.
 
+### A site game's key and API: `siteConfig` (`site.ts`)
+
+A game hosted at `<game>.partii.games` ships one publishable key per address and lets the address
+pick (`https://partii.games/docs/sdk-ts/site.ts`, no imports; GUIDE.md "Which key and API a site uses"):
+
+```ts
+import { siteConfig } from "@partii/sdk/site";
+const cfg = siteConfig({
+  "mygame.partii.games": "pk_mystudio_web_...",          // production key
+  "mygame-staging.partii.games": "pk_mystudio_web_...",  // staging key
+});
+// {game, api, key, env, preview, host} | null (no key for this address: Partii stays off)
+const api = cfg && createClient({ base: cfg.api, key: cfg.key });
+```
+
+- `<deploy>--mygame-staging.partii.games` (a deploy's preview_url) uses its site's key.
+- API: `https://api-staging.partii.games` for addresses ending in `-staging.partii.games`, else production.
+- On localhost only: `?partii=staging|prod`, or `?partii_key=…&partii_api=…` (what `partii test room` adds).
+- Tests: `siteConfig(keys, {override: {api, key, game}})`, or `{location: {hostname, search}}`.
+
+### Room events: `roomEvents` (`room-events.ts`)
+
+A page is in its room before its world and handlers are ready; events heard in that gap are lost
+unless held. Feed the engine's `poll()` (or raw protocol frames) from the start:
+
+```ts
+import { roomEvents } from "@partii/sdk/room-events";
+const room = roomEvents();
+setInterval(() => room.feed(engine.poll()), 4);
+// later: everything held so far, oldest first, then new ones
+room.on({ member_joined: (e) => admit(e.member), member_left: (e) => drop(e.mid), message: (e) => onPacket(e.from, e.bytes) });
+room.members; room.knows(mid);   // the other members, live
+```
+
+Order: host `online` → `created` → per guest `member_joined` → `peer_connected`; a guest `online` →
+`joined` (everyone so far in `room.members`, no `member_joined` for them). The engine drops a
+datagram from a member it hasn't linked yet, so a joiner's first packets can vanish: repeat hello
+until the host answers with the full state. GUIDE.md "Room events: order and shapes".
+
+### Threads (SharedArrayBuffer)
+
+`partii web deploy --isolated` isolates a site only as a top-level page (its own tab or window). In
+a frame (partii.games, the phone apps, the desktop app's game window) it isn't isolated today.
+Check any surface with https://partii.games/probe/threads.html, and keep a path without shared memory.
+
 ## Godot 4
 
 https://github.com/PartiiGames/partii-godot (Godot Asset Library: "Partii"). Web exports, Godot 4.3+,

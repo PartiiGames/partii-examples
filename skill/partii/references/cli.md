@@ -25,10 +25,27 @@ partii whoami                                           # who, trusted?, limits
 
 Local everything: `partii dev up` then `PARTII_API=http://127.0.0.1:8787` (fake store and logins).
 
+## An agent on a game's team
+
+An agent signs up with its own email and is invited; it never uses a person's account or a token
+passed to it.
+
+```sh
+partii login --email agent@example.com ; partii login --email agent@example.com --code 123456
+partii members invite mystudio --email agent@example.com --role builder   # run by the owner or an admin
+partii members invites                                                    # the agent: open invites
+partii members accept inv_...                                             # the agent
+partii roles list mystudio                                                # what each role can and can't do
+```
+
+Presets: owner (everything, transfers), admin (keys, publishing, prices, secrets, members), editor
+(store page, notes, achievements), builder (builds, web deploys, analytics, errors), tester (sees
+the game, unreleased channels). Building agents need builder; admin to make keys and publish.
+
 ## Project, key, game
 
 ```sh
-partii projects put mystudio --name "My Studio"          # ids: lowercase letters and digits
+partii projects put mystudio --name "My Studio"          # ids: 1-32 lowercase letters and digits
 partii keys create mystudio --key-id web                 # key.key = pk_mystudio_web_...
 partii games put my-game --project mystudio --title "My Game" --platforms '["web"]'
 partii games publish my-game                             # new developers: review first (games get my-game → review)
@@ -40,13 +57,16 @@ Game ids: 1–40 of lowercase letters, digits, dashes. Every `put`/`create` is s
 ## Host a web game
 
 ```sh
-partii web deploy my-game ./dist          # https://my-game.partii.games (staging: my-game-staging.partii.games)
-partii web deploy my-game ./dist --spa    # client-side routes
-partii web deploy my-game ./dist --isolated   # threaded wasm (COOP/COEP)
-partii web list my-game ; partii web activate my-game <deploy> ; partii web take-down my-game
+partii web deploy mygame ./dist          # https://mygame.partii.games (staging: mygame-staging.partii.games)
+partii web deploy mygame ./dist --spa    # client-side routes
+partii web deploy mygame ./dist --isolated   # threaded wasm (COOP/COEP)
+partii web list my-game ; partii web activate mygame <deploy> ; partii web take-down my-game
 ```
 
 `index.html` at the top; dotfiles skipped; HTML revalidated each load, other files cached ~1 minute.
+A new developer's site goes live once Partii's review approves the deploy (`partii web list` shows
+`review.status`); the deploy's `preview_url` (`https://<deploy>--mygame.partii.games/`) works at once.
+`--no-activate` uploads without going live; `partii web activate mygame <deploy>` later.
 
 ## Players, saves, scores, items (for tests and support)
 

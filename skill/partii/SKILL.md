@@ -72,9 +72,15 @@ partii login --email you@example.com --code 123456
 partii projects put mystudio --name "My Studio"
 partii keys create mystudio --key-id web             # → pk_mystudio_web_...
 partii games put my-game --project mystudio --title "My Game" --platforms '["web"]'
-partii web deploy my-game ./dist                     # → https://my-game-staging.partii.games
+partii web deploy mygame ./dist                     # → https://mygame-staging.partii.games
 partii help --json                                   # every command, argument and example
 ```
+
+**An agent works on its own account:** `partii login` with the agent's own email, then an owner or
+admin runs `partii members invite <project> --email <agent email> --role builder` (admin to make keys
+and publish) and the agent runs `partii members invites` and `partii members accept <invite>`.
+`partii roles list <project>` says what each role can do. A new site goes live once Partii's review
+approves it; the deploy's `preview_url` works at once. Never pass tokens or keys between agents.
 
 Every command prints one JSON document; exit 0 ok, 1 Partii said no (`error.hint` says what to do),
 2 bad command line. Mutations are safe to repeat; add `--dry-run` to preview. Full tour:
@@ -84,7 +90,7 @@ Every command prints one JSON document; exit 0 ok, 1 Partii said no (`error.hint
 
 | Engine | Get it | Notes |
 |---|---|---|
-| Web (TS/JS) | each example's `get-sdk.mjs` installs `client.ts`, `generated.ts`, `buy.ts` from `https://partii.games/docs/sdk-ts/` | `createClient({base, key})`, one typed method per API operation; import as `@partii/sdk` |
+| Web (TS/JS) | each example's `get-sdk.mjs` installs `client.ts`, `generated.ts`, `buy.ts` from `https://partii.games/docs/sdk-ts/` | `createClient({base, key})`, one typed method per API operation; import as `@partii/sdk`. A site game picks its API and key from its address with `siteConfig` (`site.ts`); rooms hold events until your handlers are set with `roomEvents` (`room-events.ts`) |
 | Godot 4 | https://github.com/PartiiGames/partii-godot (Asset Library: "Partii") | `Partii.configure`, `sign_in`, `save_slot`, `buy`, `submit_score`, `track` |
 | Rust / Bevy | `partii-account = { git = "https://github.com/PartiiGames/partii-sdk" }` | guest, saves, `owns`, `buy`, `track`, panic hook |
 
@@ -115,7 +121,11 @@ guide https://partii.games/docs/GUIDE.md. Details: [references/sdk.md](reference
 - Saves: no save is a 404 (not an error); always send `base_rev`; on 409 merge theirs, never re-send yours.
 - Leaderboards: submit once per run; set `--higher-is-better false` before anyone submits times.
 - Never buy for the player; unlock only what `playersItems` lists.
-- A staging key in a production build (or the reverse) "works" against the wrong world.
+- A staging key in a production build (or the reverse) "works" against the wrong world. On a site,
+  let `siteConfig` pick the key from the address (live, `-staging`, `<deploy>--` previews).
+- Rooms: a `member_joined` heard before your handlers are set is lost, and the engine drops a
+  joiner's first packets if they beat its `member_joined`. Feed `poll()` into `roomEvents()` from
+  the start, and have joiners repeat hello until the host answers.
 
 ## Assets
 
