@@ -16,7 +16,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const SOURCE = (process.env.PARTII_SDK_URL ?? "https://partii.games/docs/sdk-ts/").replace(/\/?$/, "/");
-const FILES = ["client.ts", "generated.ts", "buy.ts"];
+const FILES = ["client.ts", "generated.ts", "buy.ts", "site.ts", "room-events.ts"];
 const dir = join(dirname(fileURLToPath(import.meta.url)), "partii-sdk");
 const stampFile = join(dir, "SDK.json");
 const mode = process.argv[2] ?? "";
