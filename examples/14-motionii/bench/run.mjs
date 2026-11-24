@@ -27,9 +27,10 @@ setInterval(() => { if (Date.now() - last > 180_000) stop(1, "STALL: no console 
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
 let errs = 0; const err = (t) => { if (++errs <= 5) console.log(t.slice(0, 400)); else if (errs % 100 === 0) console.log(`(${errs} page errors so far)`); };
 page.on("console", (m) => { last = Date.now(); const t = m.text();
-  if (t.startsWith("MOTIONII_")) console.log(t); else if (m.type() === "error" || /panicked at/.test(t)) err(`console ${t}`);
+  if (t.startsWith("MOTIONII_")) console.log(t); else if ((m.type() === "error" && !t.startsWith("Failed to load resource")) || /panicked at/.test(t)) err(`console ${t}`); // failed loads: counted with their URL below
   if (t.startsWith("MOTIONII_FAIL")) stop(1); });
-page.on("pageerror", (e) => err(`pageerror ${e.message}`)); // a wasm trap repeats every generation: print the first few, then count
+page.on("pageerror", (e) => err(`pageerror ${e.message}`));
+page.on("response", (r) => { if (r.status() >= 400) err(`console HTTP ${r.status()} ${r.url()}`); }); // which resource failed // a wasm trap repeats every generation: print the first few, then count
 const port = srv.address().port;
 await page.goto(`http://127.0.0.1:${port}/index.html?bench&headless=1&seed=${seed}&gens=${gens}${record ? "&record=1" : ""}`);
 if (record) {
