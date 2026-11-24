@@ -38,8 +38,8 @@ describe("motionii on staging", () => {
     const types: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css" };
     const srv = createServer((req, res) => {
       const p = new URL(req.url ?? "/", "http://x").pathname, f = join("dist", p === "/" ? "index.html" : p);
-      try { res.writeHead(200, { "Content-Type": types[extname(f)] ?? "application/octet-stream" }).end(readFileSync(f)); }
-      catch { res.writeHead(404).end(); }
+      let body: Buffer; try { body = readFileSync(f); } catch { return void res.writeHead(404).end(); } // read first, then answer
+      res.writeHead(200, { "Content-Type": types[extname(f)] ?? "application/octet-stream" }).end(body);
     }).listen(0);
     const port = (srv.address() as { port: number }).port;
     const browser = await chromium.launch({ args: ["--enable-unsafe-webgpu", "--enable-features=Vulkan", "--ignore-gpu-blocklist"] });
