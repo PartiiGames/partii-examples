@@ -42,21 +42,28 @@ describe("motionii on staging", () => {
       res.writeHead(200, { "Content-Type": types[extname(f)] ?? "application/octet-stream" }).end(body);
     }).listen(0);
     const port = (srv.address() as { port: number }).port;
-    const browser = await chromium.launch({ args: ["--enable-unsafe-webgpu", "--enable-features=Vulkan", "--ignore-gpu-blocklist"] });
+    let tick: ReturnType<typeof setInterval> | undefined;
+    const browser = await chromium.launch({ channel: "chromium", args: ["--enable-unsafe-webgpu", "--enable-features=Vulkan", "--ignore-gpu-blocklist"] });
     try {
       const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
       const lines: string[] = [];
-      page.on("console", (m) => { if (m.text().startsWith("MOTIONII_")) lines.push(m.text()); });
+      const errors: string[] = []; // page errors and failed requests: the run must have none
+      page.on("console", (m) => { if (m.text().startsWith("MOTIONII_")) { lines.push(m.text()); console.log(m.text().slice(0, 160)); } });
+      page.on("pageerror", (e) => errors.push(`pageerror ${e.message.slice(0, 300)}`));
+      page.on("response", (r) => { if (r.status() >= 400) errors.push(`HTTP ${r.status()} ${r.url()}`); });
       await page.goto(`http://127.0.0.1:${port}/?bench&gens=30&headless=1`);
+      // progress for watchdogs (the 226 MB download takes minutes): the page's status line every 15 s
+      tick = setInterval(() => page.textContent("#status").then((t) => console.log(`status: ${t}`), () => {}), 15_000);
       await page.waitForFunction(() => (window as unknown as { __motionii?: object }).__motionii || document.body.textContent?.includes("can't run"), null, { timeout: 540_000 });
       const fail = lines.find((l) => l.startsWith("MOTIONII_FAIL"));
       expect(fail, fail).toBeUndefined();
       const done = JSON.parse(lines.find((l) => l.startsWith("MOTIONII_DONE"))!.slice(14));
       expect(lines.filter((l) => l.startsWith("MOTIONII_GEN"))).toHaveLength(30);
       expect(done.tol.ok, JSON.stringify(done.tol)).toBe(true);
+      expect(errors, errors.join("\n")).toEqual([]);
       const want = expected.hashes[done.adapter]?.["30"];
       if (want) expect(done.hash).toBe(want); // a new adapter passes on tol; add its hashes to bench/expected.json
       else console.log(`new adapter ${done.adapter}: hash ${done.hash} (tol ok)`);
-    } finally { await browser.close(); srv.close(); }
+    } finally { clearInterval(tick); await browser.close(); srv.close(); }
   });
 });
