@@ -89,6 +89,17 @@
       "source": "https://github.com/PartiiGames/partii-godot",
       "test": "cd examples/13-godot-addon && godot --headless --path . --export-release Web build/web/index.html && node tests/web/motion.mjs build/web && node tests/web/frame-motion.mjs build/web && PARTII_GAME=partii-examples PARTII_KEY=pk_examples_examples_Iejc-8371u7-wd8nn-BJzY PARTII_API=https://api-staging.partii.games node tests/web/staging.mjs build/web",
       "status": "tested"
+    },
+    {
+      "id": "14-motionii",
+      "title": "Motionii: a character moved live by a motion model (NVIDIA MotionBricks on WebGPU)",
+      "tags": ["animation", "motion", "character", "humanoid", "locomotion", "webgpu", "wasm", "ai", "model", "motionbricks", "replan", "warm-up", "benchmark"],
+      "when": "Animating a humanoid from player commands with a motion model in the browser, instead of (or before) baked clips.",
+      "language": "typescript",
+      "engine": "web (canvas 2D; WebGPU runtime hosted by Partii)",
+      "path": "examples/14-motionii",
+      "test": "cd examples/14-motionii && npm install && npx playwright install chromium && npm test",
+      "status": "draft"
     }
   ]
 }

@@ -20,6 +20,7 @@ Made for coding agents first, people too. MIT licensed.
 | [05-buy-unlock](examples/05-buy-unlock) | Sell an item for Pops and unlock it |
 | [06-analytics](examples/06-analytics) | Events and sessions, and the rules that silently drop events |
 | [13-godot-addon](examples/13-godot-addon) | A Godot 4 web game on Partii (source: [partii-godot](https://github.com/PartiiGames/partii-godot)) |
+| [14-motionii](examples/14-motionii) | A character moved live by a motion model (NVIDIA MotionBricks on WebGPU), with a replan on every command |
 
 ## Use one
 

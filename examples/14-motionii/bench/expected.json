@@ -1,0 +1,5 @@
+{
+  "about": "Exact output hashes per adapter (vendor/architecture) and run length, seed 1. GPUs round differently and each generation feeds the next, so a hash only holds on its own adapter; any adapter must pass tol (the first 30 generations replayed against motionii/0.1.0/bench/ref30.bin: same token counts, median rotation error <= 0.24 deg).",
+  "seed": 1,
+  "hashes": {}
+}

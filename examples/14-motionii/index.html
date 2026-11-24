@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Motionii: a character moved by a motion model</title>
+    <style>
+      html, body { margin: 0; height: 100%; background: #120a1f; color: #fff; font: 14px system-ui, sans-serif; }
+      #game { display: block; width: 100vw; height: 100vh; touch-action: none; }
+      #status { position: fixed; left: 12px; right: 12px; top: calc(env(safe-area-inset-top, 0px) + 12px); }
+      #credit { position: fixed; left: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 8px); opacity: 0.6; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <canvas id="game" width="1280" height="720"></canvas>
+    <div id="status">Loading…</div>
+    <div id="credit">Motion: NVIDIA MotionBricks (NVIDIA Open Model Agreement). Not made or endorsed by NVIDIA.</div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
