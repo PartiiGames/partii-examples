@@ -25,8 +25,11 @@ const stop = async (c, why) => { if (why) console.log(why); code = c; await brow
 setTimeout(() => stop(1, `CAP: no result in ${cap / 1000} s`), cap);
 setInterval(() => { if (Date.now() - last > 180_000) stop(1, "STALL: no console line for 180 s"); }, 5000);
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
-page.on("console", (m) => { last = Date.now(); const t = m.text(); if (t.startsWith("MOTIONII_")) console.log(t); if (t.startsWith("MOTIONII_FAIL")) stop(1); });
-page.on("pageerror", (e) => console.log("pageerror", e.message));
+let errs = 0; const err = (t) => { if (++errs <= 5) console.log(t.slice(0, 400)); else if (errs % 100 === 0) console.log(`(${errs} page errors so far)`); };
+page.on("console", (m) => { last = Date.now(); const t = m.text();
+  if (t.startsWith("MOTIONII_")) console.log(t); else if (m.type() === "error" || /panicked at/.test(t)) err(`console ${t}`);
+  if (t.startsWith("MOTIONII_FAIL")) stop(1); });
+page.on("pageerror", (e) => err(`pageerror ${e.message}`)); // a wasm trap repeats every generation: print the first few, then count
 const port = srv.address().port;
 await page.goto(`http://127.0.0.1:${port}/index.html?bench&headless=1&seed=${seed}&gens=${gens}${record ? "&record=1" : ""}`);
 if (record) {
@@ -36,4 +39,5 @@ if (record) {
   await stop(0);
 }
 const done = await page.waitForFunction(() => window.__motionii, null, { timeout: cap, polling: 1000 }).then((h) => h.jsonValue());
-await stop(done.tol === null || done.tol.ok ? 0 : 1);
+if (errs) console.log(`${errs} page errors`);
+await stop(!errs && (done.tol === null || done.tol.ok) ? 0 : 1);
