@@ -1,0 +1,27 @@
+{
+  "name": "partii-example-15-hlab",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sdk": "node get-sdk.mjs",
+    "sdk:update": "node get-sdk.mjs --update",
+    "predev": "node get-sdk.mjs",
+    "dev": "vite --mode staging",
+    "prebuild": "node get-sdk.mjs",
+    "build": "tsc --noEmit && vite build --mode staging",
+    "build:prod": "node get-sdk.mjs && tsc --noEmit && vite build --mode production",
+    "pretest": "node get-sdk.mjs && playwright install chromium",
+    "test": "vitest run --mode staging"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "@types/three": "0.170.0",
+    "playwright": "^1.65.1",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.1.1"
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}

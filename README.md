@@ -20,6 +20,7 @@ Made for coding agents first, people too. MIT licensed.
 | [05-buy-unlock](examples/05-buy-unlock) | Sell an item for Pops and unlock it |
 | [06-analytics](examples/06-analytics) | Events and sessions, and the rules that silently drop events |
 | [13-godot-addon](examples/13-godot-addon) | A Godot 4 web game on Partii (source: [partii-godot](https://github.com/PartiiGames/partii-godot)) |
+| [15-hlab](examples/15-hlab) | A generated human on three.js walking and running with WASD (hlab) |
 
 ## Use one
 
