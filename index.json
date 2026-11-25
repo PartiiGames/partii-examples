@@ -91,6 +91,17 @@
       "status": "tested"
     },
     {
+      "id": "14-motionii",
+      "title": "Motionii: a character moved live by a motion model (NVIDIA MotionBricks on WebGPU)",
+      "tags": ["animation", "motion", "character", "humanoid", "locomotion", "webgpu", "wasm", "ai", "model", "motionbricks", "replan", "warm-up", "benchmark"],
+      "when": "Animating a humanoid from player commands with a motion model in the browser, instead of (or before) baked clips.",
+      "language": "typescript",
+      "engine": "web (canvas 2D; WebGPU runtime hosted by Partii)",
+      "path": "examples/14-motionii",
+      "test": "cd examples/14-motionii && npm install && npx playwright install chromium && npm test",
+      "status": "draft"
+    },
+    {
       "id": "15-hlab",
       "title": "hlab humanoid: WASD idle, walk and run on three.js",
       "tags": ["humanoid", "character", "three", "threejs", "animation", "wasd", "hlab", "walk", "run", "crossfade", "controller", "camera", "import-map"],

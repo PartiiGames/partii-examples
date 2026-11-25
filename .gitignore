@@ -7,3 +7,4 @@ dist-prod/
 .env.*.local
 *.log
 .DS_Store
+dist-bench/
