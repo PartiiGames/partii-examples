@@ -41,7 +41,9 @@ describe("motionii on staging", () => {
       const p = new URL(req.url ?? "/", "http://x").pathname, f = join("dist", p === "/" ? "index.html" : p);
       let body: Buffer; try { body = readFileSync(f); } catch { return void res.writeHead(404).end(); } // read first, then answer
       res.writeHead(200, { "Content-Type": types[extname(f)] ?? "application/octet-stream" }).end(body);
-    }).listen(0, "127.0.0.1");
+    });
+    // with a host, listen() binds asynchronously: wait for it before reading the port
+    await new Promise<void>((ok, fail) => { srv.once("error", fail); srv.listen(0, "127.0.0.1", () => ok()); });
     const port = (srv.address() as { port: number }).port;
     let tick: ReturnType<typeof setInterval> | undefined;
     const browser = await chromium.launch({ channel: "chromium", args: ["--enable-unsafe-webgpu", "--enable-features=Vulkan", "--ignore-gpu-blocklist"] });
