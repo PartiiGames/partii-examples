@@ -11,7 +11,8 @@ import { chromium } from "playwright";
 import { describe, expect, it } from "vitest";
 import { createPartii, envConfig, memoryKV } from "../src/partii";
 
-const BASE = "https://api-staging.partii.games/_partii/motionii/0.1.0/";
+// the runtime on the API this test runs against (staging: the test asserts it below)
+const BASE = `${envConfig().api.replace(/\/+$/, "")}/_partii/motionii/0.1.0/`;
 const expected = JSON.parse(readFileSync("bench/expected.json", "utf8"));
 
 describe("motionii on staging", () => {
@@ -35,12 +36,12 @@ describe("motionii on staging", () => {
 
   it("runs 30 generations in a headless browser, matching the reference within 0.24°", { timeout: 600_000 }, async () => {
     execFileSync("npx", ["vite", "build", "--mode", "staging", "--logLevel", "error"], { stdio: "inherit" });
-    const types: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css" };
+    const types: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".wasm": "application/wasm" };
     const srv = createServer((req, res) => {
       const p = new URL(req.url ?? "/", "http://x").pathname, f = join("dist", p === "/" ? "index.html" : p);
       let body: Buffer; try { body = readFileSync(f); } catch { return void res.writeHead(404).end(); } // read first, then answer
       res.writeHead(200, { "Content-Type": types[extname(f)] ?? "application/octet-stream" }).end(body);
-    }).listen(0);
+    }).listen(0, "127.0.0.1");
     const port = (srv.address() as { port: number }).port;
     let tick: ReturnType<typeof setInterval> | undefined;
     const browser = await chromium.launch({ channel: "chromium", args: ["--enable-unsafe-webgpu", "--enable-features=Vulkan", "--ignore-gpu-blocklist"] });

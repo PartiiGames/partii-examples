@@ -3,8 +3,12 @@
 // Game code: copy it, and stamp the copy with
 //   // copied from PartiiGames/partii-examples@<sha> examples/14-motionii/src/motionii.ts
 
-/** The runtime's address, in one place: a versioned folder on Partii's hosting, never changed once published. */
-export const MOTIONII_BASE = import.meta.env.VITE_MOTIONII_BASE ?? "https://api-staging.partii.games/_partii/motionii/0.1.0/";
+/** The runtime's address, in one place: a versioned folder on Partii's hosting, never changed once published. It follows
+ *  the build mode through VITE_PARTII_API (staging: api-staging, production: api.partii.games); VITE_MOTIONII_BASE
+ *  overrides it (the ?bench folder serves its own copy). */
+export const MOTIONII_VERSION = "0.1.0";
+export const MOTIONII_BASE = import.meta.env.VITE_MOTIONII_BASE
+  ?? `${(import.meta.env.VITE_PARTII_API ?? "").replace(/\/+$/, "")}/_partii/motionii/${MOTIONII_VERSION}/`;
 const MODEL = "model/soma_int8-be4b3d633437"; // 226 MB of int8 weights: streamed once, then the browser's cache
 
 export type Mat = number[]; // 3x3, row-major
@@ -132,8 +136,10 @@ export class Character {
   /** A new command: forget the last `drop` generated frames (not yet shown), so the next generation starts from the
    *  frame that will be playing then. The dropped frames become the crossfade tail: no pop. */
   rollback(drop: number): boolean {
-    this.epoch++;
+    // Nothing to drop: keep the generation in flight (it continues from the same last frame); the next step() takes the
+    // new command. Only a real cut invalidates it (step() returns null and the caller replans).
     if (drop <= 0 || this.hist.length - drop < 4) return false;
+    this.epoch++;
     this.tail = this.hist.splice(this.hist.length - drop);
     return true;
   }

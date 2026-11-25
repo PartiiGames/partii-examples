@@ -10,3 +10,12 @@ Correctness: `hash` is exact per adapter (`expected.json` keeps one per adapter 
 differently and each generation feeds the next). `tol` replays the first 30 generations of a reference run
 (`motionii/0.1.0/bench/ref30.bin`) and needs `tokens_equal` = 30 and `median_rot_deg` ≤ 0.24 on any adapter.
 A new adapter passes on `tol`; record its hashes then.
+
+## Adapters that passed tol (runtime 0.1.0)
+| Adapter key | Browser, device | gens | hash | tol | date |
+|---|---|---|---|---|---|
+| apple/apple | headless WebKit, MacBook (Apple Silicon) | 30, 300 | 08abb8051333e51e, ed4f9a4e809cc905 | 30/30 | 2026-11-24 |
+| apple/metal-3 | headless Chromium 159, same MacBook | 30 | 08abb8051333e51e | pass | 2026-11-25 |
+
+Both rows are the same GPU. The example stays `draft` in index.json until a second GPU passes tol, for example an iPhone in
+WebKit or a Vulkan box. Then it becomes `tested`.

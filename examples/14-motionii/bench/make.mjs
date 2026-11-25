@@ -1,6 +1,6 @@
 // Builds dist-bench/: the ?bench page as ONE static folder with the runtime inside it (own origin only, relative
 // paths), the way partii-runtime's corpus serves it (games/motionii-bench/). The runtime comes from Partii's hosting
-// (or MOTIONII_RELEASE=<local folder>) and is checked against its SHA256SUMS.
+// (PARTII_API=<host>, default production; or MOTIONII_BASE=<url>; or MOTIONII_RELEASE=<local folder>) and is checked against its SHA256SUMS.
 //   npm run bench            then serve dist-bench/ and open index.html?bench&gens=30
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -8,7 +8,8 @@ import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 
 const VERSION = "0.1.0";
-const BASE = process.env.MOTIONII_BASE ?? `https://api-staging.partii.games/_partii/motionii/${VERSION}/`;
+// The runtime is the same bytes on staging and production (SHA256SUMS checked below); PARTII_API picks the host.
+const BASE = process.env.MOTIONII_BASE ?? `${(process.env.PARTII_API ?? "https://api.partii.games").replace(/\/+$/, "")}/_partii/motionii/${VERSION}/`;
 const out = "dist-bench", rt = join(out, "motionii", VERSION);
 execFileSync("npx", ["vite", "build", "--mode", "staging", "--base", "./", "--outDir", out, "--emptyOutDir"], {
   stdio: "inherit", env: { ...process.env, VITE_MOTIONII_BASE: `./motionii/${VERSION}/` },
